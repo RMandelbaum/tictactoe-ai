@@ -1,6 +1,6 @@
 module HumanVsComputer
 
-  def human_vs_computer_input
+  def human_vs_computer
     puts "Player 1, enter Name"
     name = gets.strip
     puts "#{name} Select your symbol: 'X' or 'O'"
@@ -9,12 +9,10 @@ module HumanVsComputer
     display_board
   end
 
-  class Game
-    def initialize
-      @board = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+
       @com = "X" # the computer's marker
       @hum = "O" # the user's marker
-    end
+
 
     def start_game
       # start by printing the board
@@ -109,10 +107,6 @@ module HumanVsComputer
       b.all? { |s| s == "X" || s == "O" }
     end
 
-  end
-
-  game = Game.new
-  game.start_game
 
 
 end

@@ -65,8 +65,8 @@ class TicTacToe
     number = make_int-1
   end
 
-  def move(index, value)
-    @board[index] = value
+  def move(index, current_player)
+    @board[index] = current_player
   end
 
   def position_taken? (index)
@@ -83,35 +83,35 @@ class TicTacToe
 
 
 
-  def turn
-    puts "Please enter 1-9:"
-    input = gets.strip
-    index = input_to_index(input)
-    if valid_move?(index)
-      move(index, current_player)
-      display_board
-    elsif (index > 8 || index < 0)
-      puts "Invalid Number Bruh"
-      turn
-    else
-      puts "Space is taken"
-      turn
-    end
-  end
+  # def turn
+  #   puts "Please enter 1-9:"
+  #   input = gets.strip
+  #   index = input_to_index(input)
+  #   if valid_move?(index)
+  #     move(index, current_player)
+  #     display_board
+  #   elsif (index > 8 || index < 0)
+  #     puts "Invalid Number Bruh"
+  #     turn
+  #   else
+  #     puts "Space is taken"
+  #     turn
+  #   end
+  # end
 
-  def turn_count
-  counter = 0
-  @board.each do|space|
-    if space == "X" || space == "O"
-      counter +=1
-    end
-  end
-    counter
-  end
+  # def turn_count
+  # counter = 0
+  # @board.each do|space|
+  #   if space == "X" || space == "O"
+  #     counter +=1
+  #   end
+  # end
+  #   counter
+  # end
 
-  def current_player
-    turn_count.odd? ? "O" : "X"
-  end
+  # def current_player
+  #   turn_count.odd? ? "O" : "X"
+  # end
 
   def won?()
     WIN_COMBINATIONS.detect do |combination| # combination on the first loop will equal [0,1,2], which is an array of index values
@@ -138,11 +138,16 @@ class TicTacToe
     end
   end
 
-  def winner
-    if won?
-      @board[won?[0]]
-    end
-  end
+  # def winner
+  #   if won?
+  #     winner_symbol = @board[won?[0]]
+  #   end
+  #   if winner_symbol == @first_symbol
+  #     @name1
+  #   else
+  #     @name2
+  #   end
+  # end
 
   def play
       new_game
@@ -151,10 +156,10 @@ class TicTacToe
       end
 
       if won?
-        puts "Congratulations #{winner}!"
+        puts "#{winner} Won!"
       end
         if draw?
-    puts "Cat's Game!"
+    puts "It's a Draw!"
     end
     end
 
