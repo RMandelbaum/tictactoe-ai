@@ -1,112 +1,113 @@
 module HumanVsComputer
 
+#Main method that invokes this version
   def human_vs_computer
-    puts "Player 1, enter Name"
-    name = gets.strip
-    puts "#{name} Select your symbol: 'X' or 'O'"
-    input = gets.strip
-    puts "#{name} vs Bob the Computer"
+    get_single_player
     display_board
   end
 
-
-      @com = "X" # the computer's marker
-      @hum = "O" # the user's marker
-
-
-    def start_game
-      # start by printing the board
-      puts " #{@board[0]} | #{@board[1]} | #{@board[2]} \n===+===+===\n #{@board[3]} | #{@board[4]} | #{@board[5]} \n===+===+===\n #{@board[6]} | #{@board[7]} | #{@board[8]} \n"
-      puts "Enter [0-8]:"
-      # loop through until the game was won or tied
-      until game_is_over(@board) || tie(@board)
-        get_human_spot
-        if !game_is_over(@board) && !tie(@board)
-          eval_board
-        end
-        puts " #{@board[0]} | #{@board[1]} | #{@board[2]} \n===+===+===\n #{@board[3]} | #{@board[4]} | #{@board[5]} \n===+===+===\n #{@board[6]} | #{@board[7]} | #{@board[8]} \n"
-      end
-      puts "Game over"
-    end
-
-    def get_human_spot
-      spot = nil
-      until spot
-        spot = gets.chomp.to_i
-        if @board[spot] != "X" && @board[spot] != "O"
-          @board[spot] = @hum
-        else
-          spot = nil
-        end
-      end
-    end
-
-    def eval_board
-      spot = nil
-      until spot
-        if @board[4] == "4"
-          spot = 4
-          @board[spot] = @com
-        else
-          spot = get_best_move(@board, @com)
-          if @board[spot] != "X" && @board[spot] != "O"
-            @board[spot] = @com
-          else
-            spot = nil
-          end
-        end
-      end
-    end
-
-    def get_best_move(board, next_player, depth = 0, best_score = {})
-      available_spaces = []
-      best_move = nil
-      board.each do |s|
-        if s != "X" && s != "O"
-          available_spaces << s
-        end
-      end
-      available_spaces.each do |as|
-        board[as.to_i] = @com
-        if game_is_over(board)
-          best_move = as.to_i
-          board[as.to_i] = as
-          return best_move
-        else
-          board[as.to_i] = @hum
-          if game_is_over(board)
-            best_move = as.to_i
-            board[as.to_i] = as
-            return best_move
-          else
-            board[as.to_i] = as
-          end
-        end
-      end
-      if best_move
-        return best_move
-      else
-        n = rand(0..available_spaces.count)
-        return available_spaces[n].to_i
-      end
-    end
-
-    def game_is_over(b)
-
-      [b[0], b[1], b[2]].uniq.length == 1 ||
-      [b[3], b[4], b[5]].uniq.length == 1 ||
-      [b[6], b[7], b[8]].uniq.length == 1 ||
-      [b[0], b[3], b[6]].uniq.length == 1 ||
-      [b[1], b[4], b[7]].uniq.length == 1 ||
-      [b[2], b[5], b[8]].uniq.length == 1 ||
-      [b[0], b[4], b[8]].uniq.length == 1 ||
-      [b[2], b[4], b[6]].uniq.length == 1
-    end
-
-    def tie(b)
-      b.all? { |s| s == "X" || s == "O" }
-    end
+#Get's user input for name and symbol
+def get_single_player
+  puts "Player 1, enter Name"
+  name = gets.strip
+  get_first_symbol
+  @computer_symbol = "O"
+  #Insert validation so player doesn't choose O
+  puts "#{name} vs Bob the Computer"
+end
 
 
+def h_vs_c_turn_count
+counter = 0
+@board.each do|space|
+  if space == @first_symbol || space == @computer_symbol
+    counter +=1
+  end
+end
+  counter
+end
+
+#Figures out which player's turns
+#Return Value goes to move method so input is correct
+def h_vs_c_current_player
+  turn_count.odd? ? @computer_symbol : @first_symbol
+end
+
+#Method depends on current player - human vs computer
+def h_vs_c_turn
+  if current_player == @first_symbol
+    puts "Please enter 1-9:"
+    input = gets.strip
+    index = input_to_index(input)
+    if valid_move?(index)
+       move(index, current_player)
+       display_board
+     elsif (index > 8 || index < 0)
+       puts "Invalid Number Bruh"
+       h_vs_c_turn
+     else
+       puts "Space is taken"
+       h_vs_c_turn
+     end
+   else
+     computer_move(board)
+     display_board
+   end
+end
+
+#use minmax algorithm to figure out best best_move
+#Make it unbeatable
+def computer_move(board)
+  puts "Hello we made it this far"
+  binding.pry
+  # ui.thinking(piece)
+  minmax(board, piece)
+  board.place_piece(best_choice, piece)
+end
+
+def minmax(board, current_player)
+  return score(board) if game_over?(board)
+
+  scores = {}
+
+  board.available_spaces.each do |space|
+    # Copy board so we don't mess up original
+    potential_board = board.dup
+    potential_board.place_piece(space, current_player)
+
+    scores[space] = minmax(potential_board, switch(current_player))
+  end
+
+  @best_choice, best_score = best_move(current_player, scores)
+  best_score
+end
+
+def best_move(piece, scores)
+  if piece == @piece
+    scores.max_by { |_k, v| v }
+  else
+    scores.min_by { |_k, v| v }
+  end
+end
+
+def score(board)
+  if board.winner == piece
+    return 10
+  elsif board.winner == @opponent
+    return -10
+  end
+  0
+end
+
+def h_vs_c_winner
+  if won?
+    winner_symbol = @board[won?[0]]
+  end
+  if winner_symbol == @first_symbol
+    @name
+  else
+    "Bob the Computer"
+  end
+end
 
 end

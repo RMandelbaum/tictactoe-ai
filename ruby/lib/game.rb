@@ -42,10 +42,13 @@ class TicTacToe
     input = gets.strip
     if input.to_i == 1
       human_vs_human
+      @current_game = "h_vs_h"
     elsif input.to_i == 2
       human_vs_computer
+      @current_game = "h_vs_c"
     elsif input.to_i == 3
       computer_vs_computer
+      @current_game = "h_vs_c"
     else
       puts "Invalid Number"
       new_game
@@ -72,8 +75,8 @@ class TicTacToe
   def position_taken? (index)
     if (@board[index] == " ") || (@board[index] == "") || (@board[index] == nil)
     false
-  else (@board[index] == "X") || (@board[index] == "O")
-    true
+  # else (@board[index] == "X") || (@board[index] == "O")
+  #   true
   end
   end
 
@@ -152,15 +155,22 @@ class TicTacToe
   def play
       new_game
       while !over?
-      turn
-      end
+        if @current_game == "h_vs_h"
+             h_vs_h_turn
+         elsif @current_game == "h_vs_c"
+            h_vs_c_turn
+         else
+           puts "We're not there yet "
+        #   c_c_turn
+         end
+    end
 
       if won?
         puts "#{winner} Won!"
       end
-        if draw?
-    puts "It's a Draw!"
-    end
+      if draw?
+        puts "It's a Draw!"
+      end
     end
 
 

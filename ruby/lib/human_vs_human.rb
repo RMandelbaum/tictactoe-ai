@@ -21,7 +21,6 @@ module HumanVsHuman
 
 
 
-
 #Allows user to select their symbol. Traditionally 'X' or 'O', but we'll allow them to choose.
   def get_first_symbol
     puts "#{@name1} Select your symbol [One Character Valid]"
@@ -38,6 +37,7 @@ end
 def get_second_symbol
   puts "#{@name2} Select your symbol [One Character Valid]"
   @second_symbol = gets.strip
+
   #validates symbol length and unique symbol
   if @second_symbol.length != 1 || @second_symbol == @first_symbol
     puts "Invalid"
@@ -63,7 +63,7 @@ def current_player
 end
 
 
-  def turn
+  def h_vs_h_turn
     puts "Please enter 1-9:"
     input = gets.strip
     index = input_to_index(input)
@@ -72,10 +72,10 @@ end
       display_board
     elsif (index > 8 || index < 0)
       puts "Invalid Number Bruh"
-      turn
+      h_vs_h_turn
     else
       puts "Space is taken"
-      turn
+      h_vs_h_turn
     end
   end
 
