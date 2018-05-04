@@ -1,13 +1,13 @@
-require_relative './human_vs_human.rb'
-require_relative './human_vs_computer.rb'
-require_relative './computer_vs_computer.rb'
+require_relative 'human_vs_human.rb'
+require_relative 'human_vs_computer.rb'
+require_relative 'computer_vs_computer.rb'
 
 class TicTacToe
   include HumanVsHuman
   include HumanVsComputer
   include ComputerVsComputer
 
-  def initialize(board = [" "," "," "," "," "," "," "," "," "])
+  def initialize(board = ["1","2","3","4","5","6","7","8","9"])
     @board = board
   end
 

@@ -1,3 +1,5 @@
+require_relative './ai/min_max.rb'
+
 module ComputerVsComputer
 
   def computer_vs_computer
