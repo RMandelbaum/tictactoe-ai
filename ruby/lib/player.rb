@@ -4,13 +4,14 @@ class Player
 
   attr_reader :symbol, :name
 
-  #initialize with name and symbol of choice 
+  #initialize with name and symbol of choice
   def initialize(name, symbol)
-    @symbol = symbol
     @name = name
+    @symbol = symbol
+
   end
 
-  def play(game, space)
-    game.play(space)
+  def play(game, index)
+    game.play(index)
   end
 end

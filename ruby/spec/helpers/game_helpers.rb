@@ -17,7 +17,7 @@ def o_wins_two_player
   game.play(6)
 end
 
-def tied_game_two_player
+def draw_game_two_player
   game.new_game
   game.play(0)
   game.play(8)

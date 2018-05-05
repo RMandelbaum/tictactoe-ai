@@ -2,11 +2,12 @@ require 'game'
 require 'board'
 require 'player'
 require 'computer'
+require 'tic_tac_toe'
 require_relative 'helpers/game_helpers'
 
 describe Game do
-  let(:player1) { instance_double Player, marker: "X" }
-  let(:player2) { instance_double Player, marker: "O" }
+  let(:player1) { instance_double Player, symbol: "X" }
+  let(:player2) { instance_double Player, symbol: "O" }
   let(:board) { Board.new }
   subject(:game) { described_class.new(player1, player2, board)}
 
@@ -32,13 +33,13 @@ describe Game do
       expect(game.show_board).to eq ["X",1,2,3,4,5,6,7,8]
     end
 
-    it "changes the current player once a valid move is made" do
+    it "switches the current player once a valid move is made" do
       game.new_game
       game.play(0)
       expect(game.current_player).to eq player2
     end
 
-    it "does not change the current player if their move was illegal" do
+    it "does not switch the current player if their move was invalid" do
       game.new_game
       game.play(10)
       expect(game.current_player).to eq player1
@@ -50,19 +51,19 @@ describe Game do
 
     it "knows when x wins" do
       x_wins_two_player
-      game.update_game_status
-      expect(game.winner).to eq player1.marker
+      game.update_game_status(player1,player2)
+      expect(game.winner).to eq board.winner
     end
 
     it "knows when o wins" do
       o_wins_two_player
-      game.update_game_status
-      expect(game.winner).to eq player2.marker
+      game.update_game_status(player1, player2)
+      expect(game.winner).to eq board.winner
     end
 
-    it "knows when the game is tied" do
-      tied_game_two_player
-      game.update_game_status
+    it "knows when the game is draw" do
+      draw_game_two_player
+      game.update_game_status(player1, player2)
       expect(game.winner).to eq nil
     end
   end

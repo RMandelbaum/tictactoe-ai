@@ -17,7 +17,7 @@ class Game
   end
 
   def play(index)
-    change_turns if @board.take_turn(index, @current_player.symbol, @opponent.symbol) #select_space was take_turn ????
+    change_turns if @board.move(index, @current_player.symbol, @opponent.symbol)
   end
 
   def show_board
@@ -32,8 +32,8 @@ class Game
     @board.game_over?(current_symbol, opponent_symbol)
   end
 
-  def game_tied?
-    @board.tied?
+  def game_draw?
+    @board.draw?
   end
 
   def update_game_status(player1, player2)
@@ -51,5 +51,4 @@ class Game
     end
 
   end
-    #@current_player == @player1 ? @current_player = @player2 && @opponent = @player1 : @current_player = @player1 && @opponent = @player2
   end

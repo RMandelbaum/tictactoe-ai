@@ -6,30 +6,30 @@ class Board
 
 
   def initialize
-
     @spaces = [0,1,2,3,4,5,6,7,8]
     @winner = nil
   end
 
-  def take_turn(index, current_symbol, opponent_symbol)
+
+  def move(index, current_symbol, opponent_symbol)
     return false if illegal_moves(index, current_symbol, opponent_symbol)
     select_space(index, current_symbol)
   end
 
-  def all_winning_possibilities
+  def winning_combos
     winning_rows + winning_columns + winning_diagonals
   end
 
   def game_won?(symbol)
-    all_winning_possibilities.any? { |row| row.count(symbol) == 3 }
+    winning_combos.any? { |row| row.count(symbol) == 3 }
   end
 
   def check_winner(player1, player2)
     @winner = player1 if game_won?(player1.symbol)
     @winner = player2 if game_won?(player2.symbol)
-end
+  end
 
-  def tied?(current_symbol, opponent_symbol)
+  def draw?(current_symbol, opponent_symbol)
     (0..8).to_a.all? {|index| @spaces[index] != index} && !game_won?(current_symbol) && !game_won?(opponent_symbol)
   end
 
@@ -38,7 +38,7 @@ end
   end
 
   def game_over?(current_symbol, opponent_symbol)
-    (game_won?(current_symbol) || game_won?(opponent_symbol) || tied?(current_symbol, opponent_symbol) )
+    (game_won?(current_symbol) || game_won?(opponent_symbol) || draw?(current_symbol, opponent_symbol) )
   end
 
   def all_available_spaces
@@ -51,7 +51,7 @@ end
   end
 
   def illegal_moves(index, current_symbol, opponent_symbol)
-    space_taken?(@spaces[index], current_symbol, opponent_symbol) || out_of_bounds?(index)
+  space_taken?(index, current_symbol, opponent_symbol) || out_of_bounds?(index)
   end
 
   private
@@ -64,19 +64,13 @@ end
     @spaces[index] = symbol
   end
 
-  # def position_taken?(space)
-  #   binding.pry
-  #   if (@game.board.spaces[space] == @game.player1.symbol) || (@game.board.spaces[space] == @game.player2.symbol)
-  #   true
-  # # else (@board[index] == "X") || (@board[index] == "O")
-  # #   true
-  # end
-  # end
 
   def space_taken?(index, current_symbol, opponent_symbol)
-    #Space is taken if @spaces[index] == @player1.symbol || @spaces[index] == @player2.symbol
-    @spaces[index] == current_symbol || @spaces[index] == opponent_symbol
+     space = @spaces[index]
+     space == current_symbol || space == opponent_symbol
   end
+
+
 
   def winning_rows
     @spaces.each_slice(3).to_a

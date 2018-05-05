@@ -15,11 +15,11 @@
 
   #Allow player2 to choose symbol
   def get_second_symbol
-    puts "#{@player2} Select your symbol [One Character Valid]"
+    puts "#{@player2} Select your symbol [One Character Valid, No Numbers]"
     @second_symbol = gets.strip
 
     #validates symbol length and unique symbol
-    if @second_symbol.length != 1 || @second_symbol == @first_symbol || @second_symbol.is_a?(Integer)
+    if @second_symbol.length != 1 || @second_symbol == @first_symbol || input_is_an_integer?(@second_symbol)
       puts "Invalid. Let's try again."
       get_second_symbol
     end
@@ -37,22 +37,36 @@
 
   #Allows user to select their symbol. Traditionally 'X' or 'O', but we'll allow them to choose.
   def get_first_symbol
-    puts "#{@player1} Select your symbol [One Character Valid]"
+    puts "#{@player1} Select your symbol [One Character Valid, No Numbers]"
     @first_symbol = gets.strip
 
     #validates symbol length
-    if @first_symbol.length != 1
-      puts "Only one Character. Try again."
-      get_first_symbol
-    elsif @first_symbol.is_a?(Integer)
-      puts "Can't be an integer"#
+    if @first_symbol.length != 1 || input_is_an_integer?(@first_symbol)
+      puts "Invalid. Let's try again."
       get_first_symbol
     end
-
+end
     #validates that computer and player don't have the same symbol
-    if @first_symbol == "O"
+  def set_computers_symbol
+    if @first_symbol == "O" 
       @computer1_symbol = "X"
     else
       @computer1_symbol = "O"
      end
 end
+
+#validates input is an integer or not an integer [we don't want symbols matching the board options]
+  def input_is_an_integer?(input)
+    /\A[+-]?\d+\z/ === input
+  end
+
+#Validates position for two player game
+  def position_taken? (space)
+    if (@game.board.spaces[space] == @game.player1.symbol) || (@game.board.spaces[space] == @game.player2.symbol)
+      true
+    end
+  end
+
+  def valid_move?(index)
+    !position_taken?(index) && index.between?(0,8)
+  end
