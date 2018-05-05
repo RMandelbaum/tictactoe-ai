@@ -1,0 +1,8 @@
+Bugs:
+
+Validate character to not be a number
+Validate name so that entry can't be blank
+
+Player vs Human
+game breaks when it's a draw
+when computer goes first make it's symbol 'X' 

@@ -4,6 +4,7 @@ require_relative 'player'
 require_relative 'computer'
 require_relative './helpers/players_input'
 
+#Tic Tac Toe Main
 class TicTacToe
 
   attr_accessor :game
@@ -13,6 +14,7 @@ class TicTacToe
     @border = "~~~~~~~~~~~~~~~~~~~~~~~~~~"
   end
 
+#Begins game
   def game_loop
     welcome
     select_game_type
@@ -26,7 +28,7 @@ class TicTacToe
   def end_of_game(player1, player2)
     @game.update_game_status(player1, player2)
     puts @border
-    @game.winner ? message = "#{@game.winner.name} is the winner!" : message = "The game was tied!"
+    @game.winner ? message = "#{@game.winner.name} is the winner!" : message = "Look at that! It's a draw!"
     puts message
     puts @border
   end
@@ -44,7 +46,7 @@ class TicTacToe
         play_order_prompt
         break
       when 3
-        @computer1 = "Bob the Computer [-/\-]"
+        @computer1 = "Bob the Computer (-_(-_(-_(-_-)_-)_-)_-) "
         @computer2 = "Sally the Machine [^()^]"
         puts "Check out these computers. Place your bets on #{@computer1} vs #{@computer2}!"
 
@@ -76,7 +78,7 @@ class TicTacToe
   end
 
   def computer_vs_computer
-    @game = Game.new(Computer.new("X"), Computer.new("O"), Board.new)
+    @game = Game.new(Computer.new(@computer1, "X"), Computer.new(@computer2, "O"), Board.new)
     create_new_game
   end
 
@@ -202,7 +204,7 @@ end
 
 
   def computer_turn
-    puts "#{@game.current_player.name}is thinking..."
+    puts "#{@game.current_player.name} is thinking..."
     @game.play(@game.current_player.play(@game))
     display_board
   end
