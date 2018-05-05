@@ -1,9 +1,10 @@
-# Controls the Player and notes the marker
+# Controls the Player
 
 class Player
 
   attr_reader :symbol, :name
 
+  #initialize with name and symbol of choice 
   def initialize(name, symbol)
     @symbol = symbol
     @name = name

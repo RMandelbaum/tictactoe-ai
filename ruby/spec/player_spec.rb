@@ -1,4 +1,3 @@
-require 'player'
 
 describe Player do
   subject(:player1) { described_class.new("X")}
@@ -8,7 +7,11 @@ describe Player do
 
   context "#initialize" do
     it "takes a marker when initialized" do
-      expect(player1.marker).to eq "X"
+      expect(player1.symbol).to eq "@symbol1"
+    end
+
+    it "takes a name when initialized" do
+      expect(player1.name).to eq (:name1)
     end
 
     context "#play" do

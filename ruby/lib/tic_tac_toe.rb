@@ -16,18 +16,17 @@ class TicTacToe
   def game_loop
     welcome
     select_game_type
-    until @game.game_over? do
+    until @game.game_over?(@game.player1.symbol, @game.player2.symbol) do
       player_turn if @player1 || @player2
-
-      computer_turn if @opponent == "Computer"
+      computer_turn if @computer1 #== "Computer"
     end
-    end_of_game
+    end_of_game(@game.player1, @game.player2)
   end
 
-  def end_of_game
-    @game.update_game_status
+  def end_of_game(player1, player2)
+    @game.update_game_status(player1, player2)
     puts @border
-    @game.winner ? message = "#{@game.winner} is the winner!" : message = "The game was tied!"
+    @game.winner ? message = "#{@game.winner.name} is the winner!" : message = "The game was tied!"
     puts message
     puts @border
   end
@@ -45,9 +44,9 @@ class TicTacToe
         play_order_prompt
         break
       when 3
-        @player1 = "Bob the Computer [-/\-]"
-        @player2 = "Sally the Machine [^()^]"
-        puts "Check out these computers. Place your bets on #{@player1} vs #{@player2}!"
+        @computer1 = "Bob the Computer [-/\-]"
+        @computer2 = "Sally the Machine [^()^]"
+        puts "Check out these computers. Place your bets on #{@computer1} vs #{@computer2}!"
 
         computer_vs_computer
         break
@@ -66,12 +65,12 @@ class TicTacToe
   end
 
   def player_vs_computer_player_first
-    @game = Game.new(Player.new(@symbol1), Computer.new("O"), Board.new)
+    @game = Game.new(Player.new(@player1, @first_symbol), Computer.new(@computer1, @computer1_symbol), Board.new)
     create_new_game
   end
 
   def player_vs_computer_computer_first
-    @game = Game.new(Computer.new("X"), Player.new("O"), Board.new)
+    @game = Game.new(Computer.new(@computer1, @computer1_symbol), Player.new(@player1, @first_symbol), Board.new)
     create_new_game
     computer_turn
   end
@@ -107,14 +106,14 @@ class TicTacToe
       if input_is_an_integer?(space)
         space = space.to_i
         if !valid_move?(space)
-          puts "You can't go there. Try again!"
+          puts "That's a no-no. Try again."
         else
           @game.play(space)
           display_board
           break
         end
       else
-        puts "Not a number. Try again!"
+        puts "Hmm you entered something I do not recognize."
       end
     end
   end
@@ -124,11 +123,11 @@ class TicTacToe
       starting_player = gets.strip.to_i
       case starting_player
       when 1
-        puts "#{@player1} goes first!"
+        puts "Start us up, #{@player1}!"
         player_vs_computer_player_first
         break
       when 2
-        puts "#{@player2} goes first!"
+        puts "Start us up, #{@player2}!"
         player_vs_computer_computer_first
         break
       else
@@ -172,7 +171,7 @@ class TicTacToe
   def play_order_prompt
     puts "Choose who goes first: "
     puts " -1- #{@player1}"
-    puts " -2- #{@player2}"
+    puts " -2- #{@computer1}"
     play_order
   end
 
@@ -185,8 +184,7 @@ class TicTacToe
   end
 
   def player_turn_output
-    puts "#{@game.current_player.name}, which cell are you after?: "
-
+    puts "#{@game.current_player.name}, make your move: "
   end
 
 
@@ -204,9 +202,9 @@ end
 
 
   def computer_turn
-    puts "Bob is thinking..."
+    puts "#{@game.current_player.name}is thinking..."
     @game.play(@game.current_player.play(@game))
-    show_board
+    display_board
   end
 
 

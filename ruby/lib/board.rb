@@ -1,72 +1,82 @@
-# Determines the winner by storing the moves
+#stores moves on board, logic for game over/win/tie
 
 class Board
 
   attr_reader :spaces, :winner
 
+
   def initialize
+
     @spaces = [0,1,2,3,4,5,6,7,8]
     @winner = nil
   end
 
-  def take_turn(space, player)
-    #return false if illegal_moves(space)
-    select_space(space, player)
+  def take_turn(index, current_symbol, opponent_symbol)
+    return false if illegal_moves(index, current_symbol, opponent_symbol)
+    select_space(index, current_symbol)
   end
 
   def all_winning_possibilities
     winning_rows + winning_columns + winning_diagonals
   end
 
-  def game_won?(player)
-    all_winning_possibilities.any? { |row| row.count(player) == 3 }
+  def game_won?(symbol)
+    all_winning_possibilities.any? { |row| row.count(symbol) == 3 }
   end
 
-  def check_winner
-    @winner = "X" if game_won?("X")
-    @winner = "O" if game_won?("O")
-  end
+  def check_winner(player1, player2)
+    @winner = player1 if game_won?(player1.symbol)
+    @winner = player2 if game_won?(player2.symbol)
+end
 
-  def tied?
-    (0..8).to_a.all? {|space| @spaces[space] != space} && !game_won?("X") && !game_won?("O")
+  def tied?(current_symbol, opponent_symbol)
+    (0..8).to_a.all? {|index| @spaces[index] != index} && !game_won?(current_symbol) && !game_won?(opponent_symbol)
   end
 
   def show_board
     @spaces
   end
 
-
-
-  def game_over?
-    (game_won?("X") || game_won?("O") || tied? )
+  def game_over?(current_symbol, opponent_symbol)
+    (game_won?(current_symbol) || game_won?(opponent_symbol) || tied?(current_symbol, opponent_symbol) )
   end
 
   def all_available_spaces
-    @spaces.select { |space| !space_taken(space) }
+    @available_spots = @spaces.select { |index| index.is_a?(Integer) }
+    @available_spots
   end
 
   def reset_space(space)
     @spaces[space] = space
   end
 
-  # def illegal_moves(space)
-  #   space_taken(@spaces[space]) || out_of_bounds(space)
-  # end
+  def illegal_moves(index, current_symbol, opponent_symbol)
+    space_taken?(@spaces[index], current_symbol, opponent_symbol) || out_of_bounds?(index)
+  end
 
   private
 
-  def out_of_bounds(space)
-    space >= 9 || space < 0
+  def out_of_bounds?(index)
+    index >= 9 || index < 0
   end
 
-  def select_space(space, player)
-    @spaces[space] = player
+  def select_space(index, symbol)
+    @spaces[index] = symbol
   end
 
-  # def space_taken(space)
-  #   space == @game.player1.symbol || space == @game.player2.symbol
+  # def position_taken?(space)
   #   binding.pry
+  #   if (@game.board.spaces[space] == @game.player1.symbol) || (@game.board.spaces[space] == @game.player2.symbol)
+  #   true
+  # # else (@board[index] == "X") || (@board[index] == "O")
+  # #   true
   # end
+  # end
+
+  def space_taken?(index, current_symbol, opponent_symbol)
+    #Space is taken if @spaces[index] == @player1.symbol || @spaces[index] == @player2.symbol
+    @spaces[index] == current_symbol || @spaces[index] == opponent_symbol
+  end
 
   def winning_rows
     @spaces.each_slice(3).to_a

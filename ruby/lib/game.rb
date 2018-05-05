@@ -1,177 +1,55 @@
-require_relative 'human_vs_human.rb'
-require_relative 'human_vs_computer.rb'
-require_relative 'computer_vs_computer.rb'
+#Game controls board, players, and moves
 
-class TicTacToe
-  include HumanVsHuman
-  include HumanVsComputer
-  include ComputerVsComputer
+class Game
 
-  def initialize(board = ["1","2","3","4","5","6","7","8","9"])
+  attr_reader :player1, :player2, :board, :current_player, :winner
+
+  def initialize(player1, player2, board)
+    @player1 = player1
+    @player2 = player2
     @board = board
+    @winner = nil
   end
 
-  def board
-    @board
-  end
-
-  def board= (board)
-    @board = board
-  end
-
-
-  WIN_COMBINATIONS = [
-    [0,1,2], #top row
-    [3,4,5], #middle row
-    [6,7,8], #bottom row
-    [0,4,8], #diagonal 1
-    [2,4,6], #diagonal 2
-    [0,3,6], #vertical 1
-    [1,4,7], #vertical 2
-    [2,5,8] #vertical 3
-  ]
-
-##Method to select what type of game will be played (Requirement)
-##Invokes the modules of various games
   def new_game
-    puts "Welcome to Tic Tac Toe!"
-    puts "To begin enter a number to select type of game"
-    puts "1- Human vs Human"
-    puts "2- Human vs Computer"
-    puts "3- Computer vs Computer"
-    input = gets.strip
-    if input.to_i == 1
-      human_vs_human
-      @current_game = "h_vs_h"
-    elsif input.to_i == 2
-      human_vs_computer
-      @current_game = "h_vs_c"
-    elsif input.to_i == 3
-      computer_vs_computer
-      @current_game = "h_vs_c"
+     @current_player = @player1
+     @opponent = @player2
+  end
+
+  def play(index)
+    change_turns if @board.take_turn(index, @current_player.symbol, @opponent.symbol) #select_space was take_turn ????
+  end
+
+  def show_board
+    @board.show_board
+  end
+
+  def illegal_moves(space)
+    @board.illegal_moves(space)
+  end
+
+  def game_over?(current_symbol, opponent_symbol)
+    @board.game_over?(current_symbol, opponent_symbol)
+  end
+
+  def game_tied?
+    @board.tied?
+  end
+
+  def update_game_status(player1, player2)
+    @board.check_winner(player1, player2)
+    @winner = @board.winner
+  end
+
+  def change_turns
+    if @current_player == @player1
+      @current_player = @player2
+      @opponent = @player1
     else
-      puts "Invalid Number"
-      new_game
-    end
-  end
-
-  def display_board()
-  puts " #{@board[0]} | #{@board[1]} | #{@board[2]} "
-  puts "-----------"
-  puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
-  puts "-----------"
-  puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
-  end
-
-  def input_to_index(user_input)
-    make_int = user_input.to_i
-    number = make_int-1
-  end
-
-  def move(index, current_player)
-    @board[index] = current_player
-  end
-
-  def position_taken? (index)
-    if (@board[index] == " ") || (@board[index] == "") || (@board[index] == nil)
-    false
-  # else (@board[index] == "X") || (@board[index] == "O")
-  #   true
-  end
-  end
-
-  def valid_move?(index)
-    !position_taken?(index) && index.between?(0,8)
-  end
-
-
-
-  # def turn
-  #   puts "Please enter 1-9:"
-  #   input = gets.strip
-  #   index = input_to_index(input)
-  #   if valid_move?(index)
-  #     move(index, current_player)
-  #     display_board
-  #   elsif (index > 8 || index < 0)
-  #     puts "Invalid Number Bruh"
-  #     turn
-  #   else
-  #     puts "Space is taken"
-  #     turn
-  #   end
-  # end
-
-  # def turn_count
-  # counter = 0
-  # @board.each do|space|
-  #   if space == "X" || space == "O"
-  #     counter +=1
-  #   end
-  # end
-  #   counter
-  # end
-
-  # def current_player
-  #   turn_count.odd? ? "O" : "X"
-  # end
-
-  def won?()
-    WIN_COMBINATIONS.detect do |combination| # combination on the first loop will equal [0,1,2], which is an array of index values
-      @board[combination[0]] == @board[combination[1]] && @board[combination[1]] == @board[combination[2]] && @board[combination[0]] != " "
-    end
-  end
-
-  def full?()
-    # google all? array iterator
-    @board.all? do|occupied|
-      (occupied == "X" || occupied =="O") && (occupied != " ")
-    end
-  end
-
-  def draw?
-    if full? && ! won?
-      true
-    end
-  end
-
-  def over?
-    if won? || full? || draw?
-      true
-    end
-  end
-
-  # def winner
-  #   if won?
-  #     winner_symbol = @board[won?[0]]
-  #   end
-  #   if winner_symbol == @first_symbol
-  #     @name1
-  #   else
-  #     @name2
-  #   end
-  # end
-
-  def play
-      new_game
-      while !over?
-        if @current_game == "h_vs_h"
-             h_vs_h_turn
-         elsif @current_game == "h_vs_c"
-            h_vs_c_turn
-         else
-           puts "We're not there yet "
-        #   c_c_turn
-         end
+      @current_player = @player1
+      @opponent = @player2
     end
 
-      if won?
-        puts "#{winner} Won!"
-      end
-      if draw?
-        puts "It's a Draw!"
-      end
-    end
-
-
-end
+  end
+    #@current_player == @player1 ? @current_player = @player2 && @opponent = @player1 : @current_player = @player1 && @opponent = @player2
+  end
