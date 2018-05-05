@@ -127,7 +127,7 @@ class TicTacToe
         player_vs_computer_player_first
         break
       when 2
-        puts "Start us up, #{@player2}!"
+        puts "Start us up, #{@computer1}!"
         player_vs_computer_computer_first
         break
       else

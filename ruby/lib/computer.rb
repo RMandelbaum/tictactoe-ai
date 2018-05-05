@@ -15,8 +15,7 @@ class Computer
   private
 
   def calculate_best_move(game, depth = 0, best_score = {})
-    return score_scenarios(game) if game.game_over?
-    binding.pry
+    return score_scenarios(game) if game.game_over?(@symbol, @symbol)
     check_spaces = game.board.spaces.select {|space| space.is_a?(Integer) }
     check_spaces.each do |space|
       game.play(space)
@@ -32,7 +31,7 @@ class Computer
     @symbol == game.player1.symbol ? opponent = game.player2.symbol : opponent = game.player1.symbol
     return -1 if game.board.game_won?(opponent)
     return 1 if game.board.game_won?(@symbol)
-    return 0 if game.board.tied?
+    return 0 if game.board.tied?(opponent, @symbol)
   end
 
   def reset_space(game, space)
