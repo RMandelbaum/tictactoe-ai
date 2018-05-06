@@ -81,10 +81,6 @@ class TicTacToe
     end
   end
 
-
-
-
-
 #Game types:
   def two_player_game
     @game = Game.new(Player.new(@player1, @first_symbol), Player.new(@player2, @second_symbol), Board.new)
@@ -111,8 +107,6 @@ class TicTacToe
   def create_new_game
     @game.new_game
   end
-
-
 
 #players input that's invoked in game_loop
   def player_turn

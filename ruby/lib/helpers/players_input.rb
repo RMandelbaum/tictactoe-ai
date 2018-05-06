@@ -34,7 +34,6 @@
 
   end
 
-
   #Allows user to select their symbol. Traditionally 'X' or 'O', but we'll allow them to choose.
   def get_first_symbol
     puts "#{@player1} Select your symbol [One Character Valid, No Numbers]"
@@ -45,15 +44,15 @@
       puts "Invalid. Let's try again."
       get_first_symbol
     end
-end
+  end
     #validates that computer and player don't have the same symbol
   def set_computers_symbol
-    if @first_symbol == "O" 
+    if @first_symbol == "O"
       @computer1_symbol = "X"
     else
       @computer1_symbol = "O"
      end
-end
+  end
 
 #validates input is an integer or not an integer [we don't want symbols matching the board options]
   def input_is_an_integer?(input)

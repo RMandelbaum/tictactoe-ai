@@ -28,6 +28,7 @@ class Computer
     game.current_player.symbol == @symbol ? top_minimax_score(best_score) : alternatave_score(best_score)
   end
 
+
   def score_scenarios(game)
     @symbol == game.player1.symbol ? opponent = game.player2.symbol : opponent = game.player1.symbol
     return -1 if game.board.game_won?(opponent)

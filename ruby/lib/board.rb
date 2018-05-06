@@ -4,7 +4,6 @@ class Board
 
   attr_reader :spaces, :winner
 
-
   def initialize
     @spaces = [0,1,2,3,4,5,6,7,8]
     @winner = nil
@@ -64,13 +63,10 @@ class Board
     @spaces[index] = symbol
   end
 
-
   def space_taken?(index, current_symbol, opponent_symbol)
      space = @spaces[index]
      space == current_symbol || space == opponent_symbol
   end
-
-
 
   def winning_rows
     @spaces.each_slice(3).to_a

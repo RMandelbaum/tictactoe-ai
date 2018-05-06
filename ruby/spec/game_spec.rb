@@ -19,13 +19,6 @@ describe Game do
     end
   end
 
-  context "#new_game" do
-    it "always starts the game with X" do
-      game.new_game
-      expect(game.current_player).to eq player1
-    end
-  end
-
   context "#play" do
     it "allows the current player to make their move" do
       game.new_game
@@ -47,21 +40,20 @@ describe Game do
 
   end
 
-  context "end of game" do
-
-    it "knows when x wins" do
+  context "#end of game" do
+    it "knows when X wins" do
       x_wins_two_player
       game.update_game_status(player1,player2)
       expect(game.winner).to eq board.winner
     end
 
-    it "knows when o wins" do
+    it "knows when O wins" do
       o_wins_two_player
       game.update_game_status(player1, player2)
       expect(game.winner).to eq board.winner
     end
 
-    it "knows when the game is draw" do
+    it "knows when the game is a draw" do
       draw_game_two_player
       game.update_game_status(player1, player2)
       expect(game.winner).to eq nil
