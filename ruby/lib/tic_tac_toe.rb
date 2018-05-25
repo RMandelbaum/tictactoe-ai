@@ -2,6 +2,8 @@ require_relative 'game'
 require_relative 'board'
 require_relative 'player'
 require_relative 'computer'
+require_relative 'board_builder'
+require_relative 'user_input'
 require_relative './helpers/players_input'
 
 #Tic Tac Toe Main
@@ -18,6 +20,8 @@ class TicTacToe
 #Begins game
   def game_loop
     welcome
+    BoardBuilder.new
+
     select_game_type
     until @game.game_over?(@game.player1.symbol, @game.player2.symbol) do
       player_turn if @player1 || @player2

@@ -20,6 +20,7 @@ class Game
     change_turns if @board.move(index, @current_player.symbol, @opponent.symbol)
   end
 
+# Shouldnt be here ---game loop should be here board logic should be in board 
   def show_board
     @board.show_board
   end
