@@ -1,4 +1,4 @@
-# Controls the Player
+# Controls the Player creation
 
 class Player
 
@@ -10,6 +10,8 @@ class Player
     @symbol = symbol
 
   end
+
+  #Shouldn't be here, should go in the game logic 
 
   def play(game, index)
     game.play(index)

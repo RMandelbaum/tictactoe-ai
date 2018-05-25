@@ -1,14 +1,15 @@
 #stores moves on board, logic for game over/win/tie
+require_relative './ui/board_builder'
 
 class Board
 
   attr_reader :spaces, :winner
 
-  def initialize
-    @spaces = [0,1,2,3,4,5,6,7,8]
+  def initialize(board_size)
+    @board_size = board_size
+    @spaces = BoardBuilder.calculate_amount_board_spaces(board_size)
     @winner = nil
   end
-
 
   def move(index, current_symbol, opponent_symbol)
     return false if illegal_moves(index, current_symbol, opponent_symbol)
@@ -32,7 +33,7 @@ class Board
     (0..8).to_a.all? {|index| @spaces[index] != index} && !game_won?(current_symbol) && !game_won?(opponent_symbol)
   end
 
-  def show_board
+  def self.show_board
     @spaces
   end
 
@@ -73,7 +74,10 @@ class Board
   end
 
   def winning_columns
-    winning_rows.transpose
+    @spaces.each_slice(3).to_a
+
+    #winning_rows.transpose
+
   end
 
   def winning_diagonals
