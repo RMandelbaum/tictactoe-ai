@@ -11,9 +11,9 @@ class Player
 
   end
 
-  #Shouldn't be here, should go in the game logic 
+  #Shouldn't be here, should go in the game logic
 
-  def play(game, index)
-    game.play(index)
-  end
+  # def play(game, index)
+  #   game.play(index)
+  # end
 end

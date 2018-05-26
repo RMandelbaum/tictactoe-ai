@@ -19,12 +19,17 @@ class NewGame
 
 
   def self.get_board_type
-    puts "Enter any number to build your board size"
+    puts "Enter any number to build your board size: "
     input = gets.strip
-    #validate input to be a number
     number = input.to_i
+     #validate input to be a number
+    if input_is_an_integer?(number)
+      byebug
+      puts "Please Enter a Valid Number: "
+      get_board_type
+    else
     BoardBuilder.new(number)
-
+  end
   end
 
   #Options to select game types [3]

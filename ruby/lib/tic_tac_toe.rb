@@ -24,11 +24,12 @@ class TicTacToe
   def game_loop
     NewGame.welcome
     set_game_type
-     #until @game.game_over?(@game.player1.symbol, @game.player2.symbol) do
-      NewGame.player_turn if @player1 || @player2
-      NewGame.computer_turn if @computer1 #== "Computer"
-     #end
-      PlayerInput.end_of_game(@game.player1, @game.player2)
+     until @game.game_over? do #(@game.player1.symbol, @game.player2.symbol) do
+      PlayerInput.player_turn(@game) if @player1 || @player2
+      PlayerInput.computer_turn if @computer1 #== "Computer"
+     end
+      @game.winner?
+      PlayerInput.end_of_game(@game)
   end
 
 def set_game_type
@@ -99,23 +100,23 @@ end
 
 #Game types:
   def two_player_game
-    @game = Game.new(Player.new(@player1, @first_symbol), Player.new(@player2, @second_symbol), Board.new(@board_size))
+    @game = Game.new(Player.new(@player1, @first_symbol), Player.new(@player2, @second_symbol), BoardBuilder.new(@board_size))
     create_new_game
   end
 
   def player_vs_computer_player_first
-    @game = Game.new(Player.new(@player1, @first_symbol), Computer.new(@computer1, @computer1_symbol), Board.new(@board_size))
+    @game = Game.new(Player.new(@player1, @first_symbol), Computer.new(@computer1, @computer1_symbol), BoardBuilder.new(@board_size))
     create_new_game
   end
 
   def player_vs_computer_computer_first
-    @game = Game.new(Computer.new(@computer1, @computer1_symbol), Player.new(@player1, @first_symbol), Board.new(@board_size))
+    @game = Game.new(Computer.new(@computer1, @computer1_symbol), Player.new(@player1, @first_symbol), BoardBuilder.new(@board_size))
     create_new_game
     computer_turn
   end
 
   def computer_vs_computer
-    @game = Game.new(Computer.new(@computer1, "X"), Computer.new(@computer2, "O"), Board.new(@board_size))
+    @game = Game.new(Computer.new(@computer1, "X"), Computer.new(@computer2, "O"), BoardBuilder.new(@board_size))
     create_new_game
   end
 

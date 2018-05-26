@@ -2,11 +2,12 @@
 
 class BoardBuilder
 
-  attr_accessor :board_size
+  attr_accessor :board_size, :spaces, :winner
 
   def initialize(board_size)
     @board_size = board_size
-    # self.build_board
+    @spaces = BoardBuilder.calculate_amount_board_spaces(board_size)
+    @winner = nil
   end
 
   def self.print_pipe(space)
@@ -17,20 +18,18 @@ class BoardBuilder
     print "--"
   end
 
-   def self.display_board(board_size)
-     @board = Board.new(board_size)
-
-     @board_size = board_size
-
+   def self.build_board(board)
      index = 0
      row = 0
-     while row < @board_size do
+     while row < board.board_size do
        column = 0
        row_line = 0
-       while column < @board_size && index < @board.spaces.length do
-          space = @board.spaces[index]
+
+       while column < board.board_size && index < board.spaces.length do
+
+          space = board.spaces[index]
           print_pipe(space)
-          if column == @board_size - 1
+          if column == board.board_size - 1
             puts "\n"
           end
           index += 1
@@ -38,11 +37,11 @@ class BoardBuilder
       end
 
 
-        if row < @board_size -1
-          while row_line < @board_size  do
+        if row < board.board_size - 1
+          while row_line < board.board_size  do
             print_row_divider
             row_line += 1
-            if row_line == @board_size
+            if row_line == board.board_size
                puts "\n"
             end
           end
