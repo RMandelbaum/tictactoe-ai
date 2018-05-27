@@ -12,6 +12,7 @@ This was a nice class overall, with short, expressive and easy to follow methods
 The board was hard coded to be a fixed size (seems like a lot would have to change if we added the requirement for a variable sized board)
 
 **have user prompt build a dynamic board
+** board builder class
 
 Computer
 
@@ -43,7 +44,7 @@ TicTacToe
 
 Again this class is highly coupled to a CLI implementation.
 It seems to be doing several things including running the game loop and setting up the game. I think there’s a potential missing abstraction here
-
+** separation of concern
 
 Tests
 
@@ -54,7 +55,7 @@ Next Steps/Requirements
 
 The ability to play an unbeatable computer on a 3x3 and 4x4 board (should be fast enough to play on 4x4 as well)
 
-** use an algorithm to mathmatically figure out a win
+** use an algorithm to mathmatically figure out a win loop to print upon what the user chooses
 
 ** separation of concern for each class -- good at one thing of each thing
 ** design principle separation of concern

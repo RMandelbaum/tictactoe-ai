@@ -1,5 +1,4 @@
 # Controls the Player creation
-
 class Player
 
   attr_reader :symbol, :name
@@ -8,12 +7,6 @@ class Player
   def initialize(name, symbol)
     @name = name
     @symbol = symbol
-
   end
 
-  #Shouldn't be here, should go in the game logic
-
-  # def play(game, index)
-  #   game.play(index)
-  # end
 end
