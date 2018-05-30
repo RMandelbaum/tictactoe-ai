@@ -16,7 +16,7 @@ class Computer
 
 #min_max algorithm -- uses recursion
   def calculate_best_move(game, depth = 0, best_score = {})
-    return score_scenarios(game) if game.draw?
+    return score_scenarios(game) if game.game_over?
     #fix game.game_over?
     check_spaces = game.board.spaces.select {|space| space.is_a?(Integer) }
     check_spaces.each do |space|
