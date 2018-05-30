@@ -1,4 +1,4 @@
-# Controls the AI logic
+# Controls the AI
 class Computer
 
   attr_reader  :name, :symbol
@@ -16,14 +16,11 @@ class Computer
 
 #min_max algorithm -- uses recursion
   def calculate_best_move(game, depth = 0, best_score = {})
-    return score_scenarios(game) if game.draw?
-    #fix game.game_over?
+    return score_scenarios(game) if game.game_over?(game.player1.symbol, game.player2.symbol)
     check_spaces = game.board.spaces.select {|space| space.is_a?(Integer) }
     check_spaces.each do |space|
       game.play(space)
-      # errors out here ??????????
       best_score[space] = calculate_best_move(game, depth += 1, {})
-
       reset_space(game, space)
     end
 
@@ -33,15 +30,14 @@ class Computer
 
 
   def score_scenarios(game)
-
-    game.current_player == game.player2 ? opponent = game.player1.symbol : opponent = game.player2.symbol
-    return -1 if game.winner == opponent
-    return 1 if game.winner == game.current_player.symbol
-    return 0 if game.draw?
+    @symbol == game.player1.symbol ? opponent = game.player2.symbol : opponent = game.player1.symbol
+    return -1 if game.board.game_won?(opponent)
+    return 1 if game.board.game_won?(@symbol)
+    return 0 if game.board.draw?(opponent, @symbol)
   end
 
   def reset_space(game, space)
-    game.reset_space(game,space)
+    game.board.reset_space(space)
     game.change_turns
   end
 

@@ -11,13 +11,13 @@ class BoardBuilder
   end
 
   def self.print_pipe(space)
-    print " #{space}| "
+    print " #{space} | "
    end
 
   def self.print_row_divider
     print "--"
   end
-
+#join
   def self.build_board(board)
     index = 0
     row = 0

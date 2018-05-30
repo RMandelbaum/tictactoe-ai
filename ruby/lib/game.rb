@@ -19,6 +19,7 @@ class Game
   end
 
   def play(index)
+    byebug
     change_turns if move(index, @current_player.symbol, @opponent.symbol)
   end
 
@@ -74,7 +75,7 @@ class Game
    patterns = rows.push(*get_columns(rows), *get_diagonals(rows))
    winner = get_winner(patterns)
    set_winner(winner)
-   return winner != ''
+   return winner != ""
  end
 
 
@@ -89,7 +90,7 @@ class Game
  end
 
  def get_winner(patterns)
-   winning_pattern = patterns.each.select { |pattern| pattern.uniq.length == 1  }.flatten
+   winning_pattern = patterns.select { |pattern| pattern.uniq.length == 1  }.flatten
    return winning_pattern.length == 0 ? '' : winning_pattern[0]
  end
 

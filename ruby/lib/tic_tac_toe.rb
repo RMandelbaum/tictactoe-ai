@@ -58,14 +58,14 @@ class TicTacToe
   end
 
   def player_vs_computer_player_first
-    @game = Game.new(Player.new(@player1, @first_symbol), Computer.new(@computer1, @computer1_symbol), BoardBuilder.new(@board_size))
     @computer = Computer.new(@computer1, @computer1_symbol)
+    @game = Game.new(Player.new(@player1, @first_symbol), @computer, BoardBuilder.new(@board_size))
     @game.new_game
   end
 
   def player_vs_computer_computer_first
-    @game = Game.new(Computer.new(@computer1, @computer1_symbol), Player.new(@player1, @first_symbol), BoardBuilder.new(@board_size))
     @computer = Computer.new(@computer1, @computer1_symbol)
+    @game = Game.new(@computer, Player.new(@player1, @first_symbol), BoardBuilder.new(@board_size))
     @game.new_game
   end
 

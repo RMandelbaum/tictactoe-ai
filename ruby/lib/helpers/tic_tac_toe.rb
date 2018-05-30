@@ -21,7 +21,7 @@ def player_vs_computer
     player_vs_computer_player_first
   else
     player_vs_computer_computer_first
-    @new_game.computer_turn(game)
+    PlayerInput.computer_turn(game)
   end
 end
 
